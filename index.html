@@ -248,7 +248,7 @@
             labels: ['OpenAI', 'Meta', 'Microsoft', 'Google', 'Amazon', 'Tesla', 'Tencent', 'Oracle', 'NVIDIA', 'Alibaba', 'Baidu', 'ByteDance', 'Anthropic', 'xAI', 'Others'],
             datasets: [{
                 label: 'H100-Equivalent GPUs',
-                data: [720000, 600000, 150000, 50000, 50000, 50000, 50000, 50000, 4600, 50000, 50000, 50000, 70000, 100000, 35000],
+                data: [720000, 600000, 150000, 100000, 50000, 50000, 50000, 50000, 4600, 50000, 50000, 50000, 70000, 100000, 35000],
                 backgroundColor: (context) => {
                     const label = context.chart.data.labels[context.dataIndex];
                     return ['Tencent', 'Alibaba', 'Baidu', 'ByteDance'].includes(label) ? 'rgba(231, 76, 60, 0.8)' : 'rgba(52, 152, 219, 0.8)';
