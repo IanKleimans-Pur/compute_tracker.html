@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compute Tracker: Who will own the finish line?</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
             --background-color: #ecf0f1;
             --text-color: #34495e;
             --card-background: #ffffff;
         }
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Roboto', sans-serif;
             line-height: 1.6;
             color: var(--text-color);
             background-color: var(--background-color);
@@ -32,14 +34,23 @@
             text-align: center;
             padding: 2rem 0;
             margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         h1 {
             margin: 0;
             font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .description {
+            font-size: 1rem;
+            max-width: 800px;
+            margin: 1rem auto 0;
+            opacity: 0.9;
         }
         h2 {
-            color: var(--primary-color);
+            color: var(--secondary-color);
             margin-top: 0;
+            font-weight: 700;
         }
         .chart-container {
             background-color: var(--card-background);
@@ -47,6 +58,11 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
             padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         .chart {
             height: 400px;
@@ -66,7 +82,7 @@
             border-radius: 4px;
         }
         .calculator button {
-            background-color: var(--secondary-color);
+            background-color: var(--accent-color);
             color: white;
             border: none;
             padding: 0.5rem 1rem;
@@ -75,7 +91,7 @@
             transition: background-color 0.3s ease;
         }
         .calculator button:hover {
-            background-color: #27ae60;
+            background-color: #c0392b;
         }
         footer {
             background-color: var(--primary-color);
@@ -103,14 +119,20 @@
             text-align: left;
         }
         th {
-            background-color: var(--primary-color);
+            background-color: var(--secondary-color);
             color: white;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Compute Tracker: Who will own the finish line?</h1>
+        <p class="description">It is hard to understate both how important compute is for emerging and existing technologies and how hard it is to find a reliable GPU tracker. The goal of this project is to make an easy accessible and freely available compute tracker, in H100s equivalent.</p>
     </header>
 
     <div class="container">
@@ -121,45 +143,51 @@
             <p>Phone: +1 (609) 470-1734</p>
         </div>
 
-        <div class="chart-container">
-            <h2>H100-Equivalent GPU Distribution by Company</h2>
-            <div class="chart">
-                <canvas id="gpuDistributionChart"></canvas>
+        <div class="grid">
+            <div class="chart-container">
+                <h2>H100-Equivalent GPU Distribution by Company</h2>
+                <div class="chart">
+                    <canvas id="gpuDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2>H100-Equivalent GPUs by Country</h2>
+                <div class="chart">
+                    <canvas id="gpuByCountryChart"></canvas>
+                </div>
             </div>
         </div>
 
-        <div class="chart-container">
-            <h2>H100-Equivalent GPUs by Country</h2>
-            <div class="chart">
-                <canvas id="gpuByCountryChart"></canvas>
+        <div class="grid">
+            <div class="chart-container">
+                <h2>Training Compute of Notable Models</h2>
+                <div class="chart">
+                    <canvas id="trainingComputeChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2>AI Compute Capacity Growth (%QoQ)</h2>
+                <div class="chart">
+                    <canvas id="computeGrowthChart"></canvas>
+                </div>
             </div>
         </div>
 
-        <div class="chart-container">
-            <h2>Training Compute of Notable Models</h2>
-            <div class="chart">
-                <canvas id="trainingComputeChart"></canvas>
+        <div class="grid">
+            <div class="chart-container">
+                <h2>Estimated Hyperscaler Data Center Capacity (MW)</h2>
+                <div class="chart">
+                    <canvas id="dataCenterCapacityChart"></canvas>
+                </div>
             </div>
-        </div>
 
-        <div class="chart-container">
-            <h2>AI Compute Capacity Growth (%QoQ)</h2>
-            <div class="chart">
-                <canvas id="computeGrowthChart"></canvas>
-            </div>
-        </div>
-
-        <div class="chart-container">
-            <h2>Estimated Hyperscaler Data Center Capacity (MW)</h2>
-            <div class="chart">
-                <canvas id="dataCenterCapacityChart"></canvas>
-            </div>
-        </div>
-
-        <div class="chart-container">
-            <h2>Hyperscale Data Centers</h2>
-            <div class="chart">
-                <canvas id="hyperscaleDataCentersChart"></canvas>
+            <div class="chart-container">
+                <h2>Hyperscale Data Centers</h2>
+                <div class="chart">
+                    <canvas id="hyperscaleDataCentersChart"></canvas>
+                </div>
             </div>
         </div>
 
@@ -234,168 +262,205 @@
 
     <footer>
         <p>Data sources: TweakTown, Datacenter Dynamics, Tom's Hardware, Gear Musk, Hardware Times, EPOCH AI, Semianalysis, IEA, Synergy Research Group</p>
-        <p>Last Updated: August 17th, 2024</p>
+        <p>Last Updated: August 23rd, 2024</p>
     </footer>
-	<script>
-    function createChart(id, config) {
-        const ctx = document.getElementById(id).getContext('2d');
-        new Chart(ctx, config);
-    }
 
-    createChart('gpuDistributionChart', {
-        type: 'bar',
-        data: {
-            labels: ['OpenAI', 'Meta', 'Microsoft', 'Google', 'Amazon', 'Tesla', 'Tencent', 'Oracle', 'NVIDIA', 'Alibaba', 'Baidu', 'ByteDance', 'Anthropic', 'xAI', 'Others'],
-            datasets: [{
-                label: 'H100-Equivalent GPUs',
-                data: [720000, 600000, 150000, 100000, 50000, 50000, 50000, 50000, 4600, 50000, 50000, 50000, 70000, 100000, 35000],
-                backgroundColor: (context) => {
-                    const label = context.chart.data.labels[context.dataIndex];
-                    return ['Tencent', 'Alibaba', 'Baidu', 'ByteDance'].includes(label) ? 'rgba(231, 76, 60, 0.8)' : 'rgba(52, 152, 219, 0.8)';
-                }
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false
+    <script>
+        function createChart(id, config) {
+            const ctx = document.getElementById(id).getContext('2d');
+            new Chart(ctx, config);
         }
-    });
 
-    createChart('gpuByCountryChart', {
-        type: 'pie',
-        data: {
-            labels: ['USA', 'China', 'Other'],
-            datasets: [{
-                data: [1654600, 160000, 15000],
-                backgroundColor: ['rgba(52, 152, 219, 0.8)', 'rgba(231, 76, 60, 0.8)', 'rgba(241, 196, 15, 0.8)']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
-
-    createChart('trainingComputeChart', {
-        type: 'scatter',
-        data: {
-            datasets: [{
-                label: 'Training Compute (FLOP)',
-                data: [
-                    {x: 2010, y: 1e14},
-                    {x: 2012, y: 1e16},
-                    {x: 2016, y: 1e23},
-                    {x: 2020, y: 1e24},
-                    {x: 2023, y: 1e26}
-                ],
-                backgroundColor: 'rgba(155, 89, 182, 0.8)'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: { type: 'linear', position: 'bottom' },
-                y: { type: 'logarithmic' }
-            }
-        }
-    });
-
-    createChart('computeGrowthChart', {
-        type: 'bar',
-        data: {
-            labels: ['2Q23', '3Q23', '4Q23', '1Q24', '2Q24', '3Q24', '4Q24', '1Q25', '2Q25', '3Q25', '4Q25'],
-            datasets: [{
-                label: 'FLOPS Growth %QoQ',
-                data: [42, 75, 71, 59, 44, 41, 36, 38, 37, 29, 26],
-                backgroundColor: (context) => {
-                    return context.dataIndex > 4 ? 'rgba(241, 196, 15, 0.8)' : 'rgba(230, 126, 34, 0.8)';
-                }
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
-
-    createChart('dataCenterCapacityChart', {
-        type: 'bar',
-        data: {
-            labels: ['AWS', 'Google', 'Microsoft', 'Meta', 'Apple', 'Alibaba', 'Huawei', 'Baidu', 'Tencent'],
-            datasets: [{
-                label: '2022 Capacity',
-                data: [3024, 2176, 2480, 1790, 600, 1350, 494, 608, 487],
-                backgroundColor: 'rgba(52, 152, 219, 0.8)'
-            }, {
-                label: 'Projected Future Capacity',
-                data: [2905, 3344, 2533, 2595, 1403, 487, 0, 0, 0],
-                backgroundColor: 'rgba(46, 204, 113, 0.8)'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: { x: { stacked: true }, y: { stacked: true } }
-        }
-    });
-
-    createChart('hyperscaleDataCentersChart', {
-        type: 'bar',
-        data: {
-            labels: ['Q4 17', 'Q4 18', 'Q4 19', 'Q4 20', 'Q4 21', 'Q4 22', 'Q4 23'],
-            datasets: [{
-                label: 'Number of Hyperscale Data Centers',
-                data: [390, 470, 550, 630, 720, 840, 992],
-                backgroundColor: 'rgba(52, 152, 219, 0.8)'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of Data Centers'
+        createChart('gpuDistributionChart', {
+            type: 'bar',
+            data: {
+                labels: ['OpenAI', 'Meta', 'Microsoft', 'Google', 'Amazon', 'Tesla', 'Tencent', 'Oracle', 'NVIDIA', 'Alibaba', 'Baidu', 'ByteDance', 'Anthropic', 'xAI', 'Others'],
+                datasets: [{
+                    label: 'H100-Equivalent GPUs',
+                    data: [720000, 600000, 150000, 100000, 50000, 50000, 50000, 50000, 4600, 50000, 50000, 50000, 70000, 100000, 35000],
+                    backgroundColor: (context) => {
+                        const label = context.chart.data.labels[context.dataIndex];
+                        return ['Tencent', 'Alibaba', 'Baidu', 'ByteDance'].includes(label) ? 'rgba(231, 76, 60, 0.8)' : 'rgba(52, 152, 219, 0.8)';
+                    }
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
                     }
                 }
             }
+        });
+
+        createChart('gpuByCountryChart', {
+            type: 'pie',
+            data: {
+                labels: ['USA', 'China', 'Other'],
+                datasets: [{
+                    data: [1654600, 160000, 15000],
+                    backgroundColor: ['rgba(52, 152, 219, 0.8)', 'rgba(231, 76, 60, 0.8)', 'rgba(241, 196, 15, 0.8)']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        createChart('trainingComputeChart', {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Training Compute (FLOP)',
+                    data: [
+                        {x: 2010, y: 1e14},
+                        {x: 2012, y: 1e16},
+                        {x: 2016, y: 1e23},
+                        {x: 2020, y: 1e24},
+                        {x: 2023, y: 1e26}
+                    ],
+                    backgroundColor: 'rgba(155, 89, 182, 0.8)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { type: 'linear', position: 'bottom' },
+                    y: { 
+                        type: 'logarithmic',
+                        title: {
+                            display: true,
+                            text: 'FLOP (log scale)'
+                        }
+                    }
+                }
+            }
+        });
+
+        createChart('computeGrowthChart', {
+            type: 'bar',
+            data: {
+                labels: ['2Q23', '3Q23', '4Q23', '1Q24', '2Q24', '3Q24', '4Q24', '1Q25', '2Q25', '3Q25', '4Q25'],
+                datasets: [{
+                    label: 'FLOPS Growth %QoQ',
+                    data: [42, 75, 71, 59, 44, 41, 36, 38, 37, 29, 26],
+                    backgroundColor: (context) => {
+                        return context.dataIndex > 4 ? 'rgba(241, 196, 15, 0.8)' : 'rgba(230, 126, 34, 0.8)';
+                    }
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Growth (%)'
+                        }
+                    }
+                }
+            }
+        });
+
+        createChart('dataCenterCapacityChart', {
+            type: 'bar',
+            data: {
+                labels: ['AWS', 'Google', 'Microsoft', 'Meta', 'Apple', 'Alibaba', 'Huawei', 'Baidu', 'Tencent'],
+                datasets: [{
+                    label: '2022 Capacity',
+                    data: [3024, 2176, 2480, 1790, 600, 1350, 494, 608, 487],
+                    backgroundColor: 'rgba(52, 152, 219, 0.8)'
+                }, {
+                    label: 'Projected Future Capacity',
+                    data: [2905, 3344, 2533, 2595, 1403, 487, 0, 0, 0],
+                    backgroundColor: 'rgba(46, 204, 113, 0.8)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { 
+                    x: { stacked: true },
+                    y: { 
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Capacity (MW)'
+                        }
+                    }
+                }
+            }
+        });
+
+        createChart('hyperscaleDataCentersChart', {
+            type: 'line',
+            data: {
+                labels: ['Q4 17', 'Q4 18', 'Q4 19', 'Q4 20', 'Q4 21', 'Q4 22', 'Q4 23'],
+                datasets: [{
+                    label: 'Number of Hyperscale Data Centers',
+                    data: [390, 470, 550, 630, 720, 840, 992],
+                    backgroundColor: 'rgba(52, 152, 219, 0.8)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Data Centers'
+                        }
+                    }
+                }
+            }
+        });
+
+        createChart('dataCenterCapacityPieChart', {
+            type: 'pie',
+            data: {
+                labels: ['United States', 'China', 'Europe', 'Rest of APAC', 'Rest of World'],
+                datasets: [{
+                    data: [51, 16, 17, 10, 5],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.8)',
+                        'rgba(231, 76, 60, 0.8)',
+                        'rgba(241, 196, 15, 0.8)',
+                        'rgba(46, 204, 113, 0.8)',
+                        'rgba(155, 89, 182, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
+        function calculateCost() {
+            const numGPUs = parseFloat(document.getElementById('numGPUs').value);
+            const powerConsumption = parseFloat(document.getElementById('powerConsumption').value);
+            const electricityRate = parseFloat(document.getElementById('electricityRate').value);
+            const utilizationRate = parseFloat(document.getElementById('utilizationRate').value) / 100;
+
+            const annualCost = (numGPUs * powerConsumption * 24 * 365 * electricityRate * utilizationRate) / (1000 * 1000000);
+            document.getElementById('annualCost').textContent = annualCost.toFixed(2);
         }
-    });
-
-    createChart('dataCenterCapacityPieChart', {
-        type: 'pie',
-        data: {
-            labels: ['United States', 'China', 'Europe', 'Rest of APAC', 'Rest of World'],
-            datasets: [{
-                data: [51, 16, 17, 10, 5],
-                backgroundColor: [
-                    'rgba(52, 152, 219, 0.8)',
-                    'rgba(231, 76, 60, 0.8)',
-                    'rgba(241, 196, 15, 0.8)',
-                    'rgba(46, 204, 113, 0.8)',
-                    'rgba(155, 89, 182, 0.8)'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
-
-    function calculateCost() {
-        const numGPUs = parseFloat(document.getElementById('numGPUs').value);
-        const powerConsumption = parseFloat(document.getElementById('powerConsumption').value);
-        const electricityRate = parseFloat(document.getElementById('electricityRate').value);
-        const utilizationRate = parseFloat(document.getElementById('utilizationRate').value) / 100;
-
-        const annualCost = (numGPUs * powerConsumption * 24 * 365 * electricityRate * utilizationRate) / (1000 * 1000000);
-        document.getElementById('annualCost').textContent = annualCost.toFixed(2);
-    }
-</script>
+    </script>
 </body>
-</html>
+</html> 
