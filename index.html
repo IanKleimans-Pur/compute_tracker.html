@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Compute Tracker: Who will own the finish line?</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --background-color: #ecf0f1;
-            --text-color: #34495e;
-            --card-background: #ffffff;
+            --primary-color: #1f2833;
+            --secondary-color: #66fcf1;
+            --accent-color: #45a29e;
+            --background-color: #0b0c10;
+            --text-color: #c5c6c7;
+            --card-background: #1f2833;
+            --card-border: #45a29e;
         }
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: var(--text-color);
             background-color: var(--background-color);
@@ -29,17 +30,18 @@
             padding: 20px;
         }
         header {
-            background-color: var(--primary-color);
-            color: white;
+            background: linear-gradient(135deg, var(--primary-color), #0b0c10);
+            color: var(--secondary-color);
             text-align: center;
             padding: 2rem 0;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
         h1 {
             margin: 0;
             font-size: 2.5rem;
             font-weight: 700;
+            color: var(--secondary-color);
         }
         .description {
             font-size: 1rem;
@@ -54,23 +56,25 @@
         }
         .chart-container {
             background-color: var(--card-background);
+            border: 1px solid var(--card-border);
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             margin-bottom: 2rem;
             padding: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .chart-container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
         .chart {
             height: 400px;
         }
         .calculator {
             background-color: var(--card-background);
+            border: 1px solid var(--card-border);
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             padding: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -78,12 +82,14 @@
             width: 100%;
             padding: 0.5rem;
             margin-bottom: 1rem;
-            border: 1px solid #ddd;
+            border: 1px solid var(--card-border);
             border-radius: 4px;
+            background-color: transparent;
+            color: var(--text-color);
         }
         .calculator button {
             background-color: var(--accent-color);
-            color: white;
+            color: var(--background-color);
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 4px;
@@ -91,19 +97,20 @@
             transition: background-color 0.3s ease;
         }
         .calculator button:hover {
-            background-color: #c0392b;
+            background-color: var(--secondary-color);
         }
         footer {
             background-color: var(--primary-color);
-            color: white;
+            color: var(--secondary-color);
             text-align: center;
             padding: 1rem 0;
             margin-top: 2rem;
         }
         .creator-info {
             background-color: var(--card-background);
+            border: 1px solid var(--card-border);
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             padding: 1.5rem;
             margin-bottom: 2rem;
             text-align: center;
@@ -114,13 +121,13 @@
             margin-top: 1rem;
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid var(--card-border);
             padding: 8px;
             text-align: left;
         }
         th {
             background-color: var(--secondary-color);
-            color: white;
+            color: var(--background-color);
         }
         .grid {
             display: grid;
@@ -262,7 +269,7 @@
 
     <footer>
         <p>Data sources: TweakTown, Datacenter Dynamics, Tom's Hardware, Gear Musk, Hardware Times, EPOCH AI, Semianalysis, IEA, Synergy Research Group</p>
-        <p>Last Updated: August 23rd, 2024</p>
+        <p>Last Updated: July 13th, 2025</p>
     </footer>
 
     <script>
@@ -277,7 +284,7 @@
                 labels: ['OpenAI', 'Meta', 'Microsoft', 'Google', 'Amazon', 'Tesla', 'Tencent', 'Oracle', 'NVIDIA', 'Alibaba', 'Baidu', 'ByteDance', 'Anthropic', 'xAI', 'Others'],
                 datasets: [{
                     label: 'H100-Equivalent GPUs',
-                    data: [720000, 600000, 150000, 100000, 50000, 50000, 50000, 50000, 4600, 50000, 50000, 50000, 70000, 100000, 35000],
+                    data: [1000000, 650000, 400000, 250000, 100000, 75000, 60000, 60000, 25000, 55000, 60000, 50000, 120000, 150000, 65000],
                     backgroundColor: (context) => {
                         const label = context.chart.data.labels[context.dataIndex];
                         return ['Tencent', 'Alibaba', 'Baidu', 'ByteDance'].includes(label) ? 'rgba(231, 76, 60, 0.8)' : 'rgba(52, 152, 219, 0.8)';
@@ -301,7 +308,7 @@
             data: {
                 labels: ['USA', 'China', 'Other'],
                 datasets: [{
-                    data: [1654600, 160000, 15000],
+                    data: [2000000, 200000, 25000],
                     backgroundColor: ['rgba(52, 152, 219, 0.8)', 'rgba(231, 76, 60, 0.8)', 'rgba(241, 196, 15, 0.8)']
                 }]
             },
@@ -321,7 +328,8 @@
                         {x: 2012, y: 1e16},
                         {x: 2016, y: 1e23},
                         {x: 2020, y: 1e24},
-                        {x: 2023, y: 1e26}
+                        {x: 2023, y: 1e26},
+                        {x: 2025, y: 1e27}
                     ],
                     backgroundColor: 'rgba(155, 89, 182, 0.8)'
                 }]
@@ -348,7 +356,7 @@
                 labels: ['2Q23', '3Q23', '4Q23', '1Q24', '2Q24', '3Q24', '4Q24', '1Q25', '2Q25', '3Q25', '4Q25'],
                 datasets: [{
                     label: 'FLOPS Growth %QoQ',
-                    data: [42, 75, 71, 59, 44, 41, 36, 38, 37, 29, 26],
+                    data: [42, 75, 71, 59, 44, 41, 36, 35, 32, 29, 25],
                     backgroundColor: (context) => {
                         return context.dataIndex > 4 ? 'rgba(241, 196, 15, 0.8)' : 'rgba(230, 126, 34, 0.8)';
                     }
@@ -374,12 +382,12 @@
             data: {
                 labels: ['AWS', 'Google', 'Microsoft', 'Meta', 'Apple', 'Alibaba', 'Huawei', 'Baidu', 'Tencent'],
                 datasets: [{
-                    label: '2022 Capacity',
-                    data: [3024, 2176, 2480, 1790, 600, 1350, 494, 608, 487],
+                    label: '2024 Capacity',
+                    data: [3500, 2400, 2700, 2100, 900, 1600, 550, 700, 530],
                     backgroundColor: 'rgba(52, 152, 219, 0.8)'
                 }, {
                     label: 'Projected Future Capacity',
-                    data: [2905, 3344, 2533, 2595, 1403, 487, 0, 0, 0],
+                    data: [3200, 3600, 2800, 3000, 1700, 600, 0, 0, 0],
                     backgroundColor: 'rgba(46, 204, 113, 0.8)'
                 }]
             },
@@ -402,10 +410,10 @@
         createChart('hyperscaleDataCentersChart', {
             type: 'line',
             data: {
-                labels: ['Q4 17', 'Q4 18', 'Q4 19', 'Q4 20', 'Q4 21', 'Q4 22', 'Q4 23'],
+                labels: ['Q4 17', 'Q4 18', 'Q4 19', 'Q4 20', 'Q4 21', 'Q4 22', 'Q4 23', 'Q4 24'],
                 datasets: [{
                     label: 'Number of Hyperscale Data Centers',
-                    data: [390, 470, 550, 630, 720, 840, 992],
+                    data: [390, 470, 550, 630, 720, 840, 992, 1120],
                     backgroundColor: 'rgba(52, 152, 219, 0.8)',
                     borderColor: 'rgba(52, 152, 219, 1)',
                     tension: 0.1
@@ -431,7 +439,7 @@
             data: {
                 labels: ['United States', 'China', 'Europe', 'Rest of APAC', 'Rest of World'],
                 datasets: [{
-                    data: [51, 16, 17, 10, 5],
+                    data: [52, 15, 18, 9, 6],
                     backgroundColor: [
                         'rgba(52, 152, 219, 0.8)',
                         'rgba(231, 76, 60, 0.8)',
